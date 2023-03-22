@@ -1,17 +1,22 @@
-#!/usr/bin/env python3
-
+import numpy as np
 """
-Concatenates two arrays.
+Concatenates two matrices along a specific axis.
 """
 
 
-def cat_arrays(arr1, arr2):
+def cat_matrices2D(mat1, mat2, axis=0):
     """
-    Parameters:
-    - arr1 (list of int/float): The first array.
-    - arr2 (list of int/float): The second array.
+    Args:
+        mat1 (numpy.ndarray): The first matrix.
+        mat2 (numpy.ndarray): The second matrix.
+        axis (int, optional): The axis along which to concatenate
+the matrices. Default is 0.
 
     Returns:
-    - A new list containing the concatenation of arr1 and arr2.
+        numpy.ndarray or None: The concatenated matrix, or None
+if the matrices cannot be concatenated.
     """
-    return arr1 + arr2
+    try:
+        return np.concatenate((mat1, mat2), axis=axis)
+    except ValueError:
+        return None
