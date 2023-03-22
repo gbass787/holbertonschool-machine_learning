@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
+"""
+Returns the transpose of a 2d matrix.
+"""
+
 
 def matrix_transpose(matrix):
     """
-    Returns the transpose of a 2D matrix.
-
     Args:
         matrix (list of lists): A 2D matrix of values. Each element is a list,
                                 representing a row of the matrix.
