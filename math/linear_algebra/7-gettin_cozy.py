@@ -20,7 +20,7 @@ def cat_matrices2D(mat1, mat2, axis=0):
     Raises:
         None
     """
-    #Ensure that mat1 and mat2 have the same shape in the non-concatenated axis
+    # Ensure that mat1 and mat2 have same shape in the non-concatenated axis
     if axis == 0 and len(mat1[0]) != len(mat2[0]):
         return None
     elif axis == 1 and len(mat1) != len(mat2):
