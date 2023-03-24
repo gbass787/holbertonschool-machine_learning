@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import numpy as np
 """
 Returns the matrix product of two arrays.
