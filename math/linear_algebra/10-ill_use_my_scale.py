@@ -2,15 +2,18 @@
 """
 Return the shape of a numpy.ndarray.
 """
-import numpy as np
 
 
 def np_shape(matrix):
     """
     Args:
-        matrix (numpy.ndarray): The numpy array to get the shape of.
+        matrix (numpy.ndarray): An array whose shape is to be calculated.
 
     Returns:
-        tuple: A tuple of integers representing the shape of the array.
+        A tuple of integers representing the shape of the input matrix.
+
+    Raises:
+        None
     """
-    return matrix.shape
+    # Use the shape attribute of the input matrix to get its shape
+    return tuple(matrix.shape)
