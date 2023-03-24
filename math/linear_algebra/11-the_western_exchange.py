@@ -2,15 +2,20 @@
 """
 Transpose a numpy.ndarray.
 """
-import numpy as np
 
 
 def np_transpose(matrix):
     """
+    Transposes a numpy.ndarray.
+
     Args:
-        matrix (numpy.ndarray): The numpy array to transpose.
+        matrix (numpy.ndarray): An array to be transposed.
 
     Returns:
-        numpy.ndarray: The transposed numpy array.
+        A new numpy.ndarray representing the transposed matrix.
+
+    Raises:
+        None
     """
-    return np.transpose(matrix)
+    # Use the transpose method of the input matrix to get its transpose
+    return matrix.transpose()
