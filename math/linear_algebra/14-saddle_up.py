@@ -5,16 +5,18 @@ Returns the matrix product of two arrays.
 """
 
 
-def np_matmul(mat1: np.ndarray, mat2: np.ndarray) -> np.ndarray:
+def np_matmul(mat1, mat2):
     """
+    Performs matrix multiplication of two numpy ndarrays.
+
     Args:
-        mat1 (numpy.ndarray): The first matrix.
-        mat2 (numpy.ndarray): The second matrix.
+        mat1 (numpy.ndarray): A numpy ndarray representing the first matrix.
+        mat2 (numpy.ndarray): A numpy ndarray representing the second matrix.
 
     Returns:
-        numpy.ndarray: The product of the two matrices.
-
-    Raises:
-        ValueError: If the matrices have incompatible dimensions.
+        A new numpy.ndarray representing the product of the two input matrices.
     """
-    return np.matmul(mat1, mat2)
+    if mat1.shape[1] != mat2.shape[0]:
+        raise ValueError("Matrices cannot be multiplied")
+
+    return np.dot(mat1, mat2)
