@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import numpy as np
 """
 performs matrix multiplication of two numpy ndarrays.
 """
@@ -16,4 +17,4 @@ def np_matmul(mat1, mat2):
     - numpy ndarray of shape (m, p) containing the
 result of matrix multiplication
     """
-    return mat1 @ mat2
+    return np.sum(mat1[..., np.newaxis] * mat2.T, axis=-2)
