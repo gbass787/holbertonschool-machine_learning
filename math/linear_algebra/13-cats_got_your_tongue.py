@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+"""
+not enough documentation it seems.
+"""
 import numpy as np
 """
 Concatenates two matrices along a specific axis.

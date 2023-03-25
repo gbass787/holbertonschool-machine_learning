@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+"""
+performs matrix multiplication of two numpy ndarrays.
+"""
 import numpy as np
 """
 Returns the matrix product of two arrays.
@@ -15,8 +18,12 @@ def np_matmul(mat1, mat2):
 
     Returns:
         A new numpy.ndarray representing the product of the two input matrices.
-    """
-    if mat1.shape[1] != mat2.shape[0]:
-        raise ValueError("Matrices cannot be multiplied")
 
+    Raises:
+        ValueError: If the matrices cannot be multiplied.
+    """
+    # Check if matrices can be multiplied using the dot product shape rule
+    assert mat1.shape[1] == mat2.shape[0], "Matrices cannot be multiplied"
+
+    # Compute the product using np.dot and return the result
     return np.dot(mat1, mat2)
