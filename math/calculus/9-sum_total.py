@@ -2,15 +2,16 @@
 
 def summation_i_squared(n):
     """
-    Calculates the sum of the squares of the first n positive integers.
+    Calculates the summation of the squares of the first n natural numbers.
 
     Args:
-    - n: an integer representing the stopping condition
+    - n: an integer value indicating the stopping condition
 
     Returns:
-    - an integer representing the sum of the squares of the first n positive integers,
-      or None if n is not a positive integer
+    - an integer value representing the summation of
+the squares of the first n natural numbers.
+    - If n is not a valid number, return None.
     """
     if not isinstance(n, int) or n <= 0:
         return None
-    return int(n * (n + 1) * (2 * n + 1) / 6)
+    return sum(i ** 2 for i in range(1, n+1))
