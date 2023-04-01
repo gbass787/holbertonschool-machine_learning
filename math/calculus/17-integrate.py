@@ -14,19 +14,20 @@ def poly_integral(poly, C=0):
     - a new list of coefficients representing the integral of the polynomial.
     - If poly or C are not valid, return None.
     """
-    if not isinstance(poly, list) or not isinstance(C, int):
+    if type(poly) is not list:
         return None
-    if len(poly) == 0:
+    elif not poly:
+        return None
+    elif len(poly) == 0:
+        return None
+    elif type(C) is not int:
+        return None
+    elif poly == [0]:
         return [C]
-    if not all(isinstance(c, (int, float)) for c in poly):
-        return None
-    integral = [C]
-    for i in range(len(poly)):
-        coef = poly[i] / (i + 1)
-        if coef.is_integer():
-            integral.append(int(coef))
-        else:
-            integral.append(coef)
-    while integral[-1] == 0 and len(integral) > 1:
-        integral.pop()
-    return integral
+    else:
+        integral = []
+        integral.append(C)
+        for i in range(len(poly)):
+            x = poly[i] / (i + 1)
+            integral.append(int(x) if x.is_integer() else x)
+        return integral
