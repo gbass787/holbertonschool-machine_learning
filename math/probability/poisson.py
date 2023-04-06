@@ -39,7 +39,7 @@ class Poisson:
             return pmf_value
 
     def cdf(self, k):
-        """Calculates the value of the CDF for a given number of successes"""
+        """Calculates the value of the CDF for a given number of 'successes'"""
         if not isinstance(k, int):
             k = int(k)
         if k < 0:
@@ -48,3 +48,10 @@ class Poisson:
         for i in range(k + 1):
             cdf_value += self.pmf(i)
         return cdf_value
+
+    def factorial(self, n):
+        """Calculates the factorial of a number"""
+        if n == 0:
+            return 1
+        else:
+            return n * self.factorial(n - 1)
