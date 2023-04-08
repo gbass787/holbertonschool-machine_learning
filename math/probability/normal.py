@@ -90,7 +90,9 @@ class Normal:
         Returns:
             The value of the CDF for the given x-value.
         """
-        z = self.z_score(x)
-        return (1.0 + (z * (0.0498673470 + z * (0.0211410061 + z *
-                (0.0032776263 + z * (0.0000380036 + z *
-                 (0.0000488906 + z * 0.0000053830))))))) ** -16
+        xa = (x - self.mean) / ((2 ** 0.5) * self.stddev)
+        errof = (((4 / Normal.pi) ** 0.5) * (xa - (xa ** 3) / 3 +
+                                             (xa ** 5) / 10 - (xa ** 7) / 42 +
+                                             (xa ** 9) / 216))
+        cdf = (1 + errof) / 2
+        return cdf
