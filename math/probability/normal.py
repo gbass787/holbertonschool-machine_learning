@@ -79,3 +79,18 @@ class Normal:
         factor2 = 2.71828182846 ** (
             -0.5 * ((x - self.mean) / self.stddev) ** 2)
         return factor1 * factor2
+
+    def cdf(self, x):
+        """
+        Calculates the value of the CDF for a given x-value.
+
+        Args:
+            x (float): The x-value for which to calculate the CDF.
+
+        Returns:
+            The value of the CDF for the given x-value.
+        """
+        z = self.z_score(x)
+        return (1.0 + (z * (0.0498673470 + z * (0.0211410061 + z *
+                (0.0032776263 + z * (0.0000380036 + z *
+                 (0.0000488906 + z * 0.0000053830))))))) ** -16
