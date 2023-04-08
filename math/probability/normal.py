@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-import math
 """
 Normal distribution
 """
@@ -71,10 +70,12 @@ class Normal:
         Calculates the value of the PDF for a given x-value.
 
         Args:
-            x (float): The x-value.
+            x (float): The x-value for which to calculate the PDF.
 
         Returns:
-            The PDF value for x.
+            The value of the PDF for the given x-value.
         """
-        return (1 / (self.stddev * (2 * math.pi) ** 0.5)) \
-            * math.exp(-0.5 * ((x - self.mean) / self.stddev) ** 2)
+        factor1 = 1 / (self.stddev * ((2 * 3.14159265359) ** 0.5))
+        factor2 = 2.71828182846 ** (
+            -0.5 * ((x - self.mean) / self.stddev) ** 2)
+        return factor1 * factor2
