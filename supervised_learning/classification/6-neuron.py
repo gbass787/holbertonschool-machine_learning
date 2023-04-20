@@ -110,23 +110,40 @@ is >= 0.5 and 0 otherwise
         self.__b -= alpha * db
 
     def train(self, X, Y, iterations=5000, alpha=0.05):
-        # Training function
+        """
+        Trains the neuron
+        X is a numpy.ndarray with shape (nx, m) that contains the input data
+            nx is the number of input features to the neuron
+            m is the number of examples
+        Y is a numpy.ndarray with shape (1, m) that contains
+the correct labels for the input data
+        iterations is the number of iterations to train over
+            if iterations is not an integer, raise a TypeError with
+the exception iterations must be an integer
+            if iterations is not positive, raise a ValueError with
+the exception iterations must be a positive integer
+        alpha is the learning rate
+            if alpha is not a float, raise a TypeError with the
+exception alpha must be a float
+            if alpha is not positive, raise a ValueError with the
+exception alpha must be positive
+        All exceptions should be raised in the order listed above
+        Updates the private attributes __W, __b, and __A
+        You are allowed to use one loop
+        Returns the evaluation of the training data after iterations
+of training have occurred
+        """
         if not isinstance(iterations, int):
             raise TypeError("iterations must be an integer")
-        if iterations <= 0:
+        if iterations < 1:
             raise ValueError("iterations must be a positive integer")
         if not isinstance(alpha, float):
             raise TypeError("alpha must be a float")
-        if alpha <= 0:
+        if alpha < 0:
             raise ValueError("alpha must be positive")
 
         for i in range(iterations):
-            # Forward propagation
-            A = self.forward_prop(X)
+            self.__A = self.forward_prop(X)
+            self.gradient_descent(X, Y, self.__A, alpha)
 
-            # Gradient descent
-            self.gradient_descent(X, Y, A, alpha)
-
-        # Evaluation after training
-        accuracy, cost = self.evaluate(X, Y)
-        return cost
+        return self.evaluate(X, Y)
