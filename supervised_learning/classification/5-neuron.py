@@ -1,3 +1,8 @@
+#!/usr/bin/env python3
+"""
+Module that defines a Neuron performing binary classification
+"""
+
 import numpy as np
 
 
