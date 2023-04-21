@@ -4,6 +4,7 @@ Deep neural network module
 """
 
 import numpy as np
+import pickle
 
 
 class DeepNeuralNetwork:
