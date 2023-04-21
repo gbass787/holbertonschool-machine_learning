@@ -5,6 +5,7 @@ Deep neural network module
 
 import numpy as np
 import pickle
+import matplotlib.pyplot as plt
 
 
 class DeepNeuralNetwork:
@@ -161,26 +162,35 @@ containing
               graph=True, step=100):
         """
         Trains the deep neural network
-
         X is a numpy.ndarray with shape (nx, m) that contains the input data
             nx is the number of input features to the neuron
             m is the number of examples
         Y is a numpy.ndarray with shape (1, m) that contains the correct
         labels for the input data
-
         iterations is the number of iterations to train over
             if iterations is not an integer, raise a TypeError with the
             exception iterations must be an integer
             if iterations is not positive, raise a ValueError with the
             exception iterations must be a positive integer
-
         alpha is the learning rate
             if alpha is not a float, raise a TypeError with the exception
             alpha must be a float
             if alpha is not positive, raise a ValueError with the exception
             alpha must be positive
-
-        All exceptions should be raised in the order listed above
+        step is the number of iterations between printing and recording
+        of the cost
+            if step is not an integer, raise a TypeError with the exception
+            step must be an integer
+            if step is not positive or is greater than iterations, raise a
+            ValueError with the exception:
+            step must be positive and <= iterations
+        graph is a boolean that defines whether or not to graph
+        training once the training has completed. If True, graph the training
+        once training is complete. Otherwise, do not graph anything.
+        verbose is a boolean that defines whether or not to print
+        information about the training. If True, print the training
+        information to the standard output. Otherwise, do not print
+        anything.
         Updates the private attributes __weights and __cache
         You are allowed to use one loop
         Returns the evaluation of the training data after iterations of
