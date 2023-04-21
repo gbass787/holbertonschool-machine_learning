@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
-"""Defines a neural network with one hidden layer performing binary
-classification"""
+"""
+Defines a neural network with one hidden layer performing binary classification
+"""
 
 import numpy as np
 
@@ -58,15 +59,12 @@ class NeuralNetwork:
         return self.__A2
 
     def forward_prop(self, X):
-        """
-        Calculates the forward propagation of the neural network
-        X is a numpy.ndarray with shape (nx, m) that contains the input data
-            nx is the number of input features to the neuron
-            m is the number of examples
-        Updates the private attributes __A1 and __A2
-        The neurons should use a sigmoid activation function
-        Returns the private attributes __A1 and __A2, respectively
-        """
+        """Calculates the forward propagation of the neural network"""
+
+        def sigmoid(x):
+            """Sigmoid activation function"""
+            return 1 / (1 + np.exp(-x))
+
         self.__A1 = sigmoid(np.dot(self.__W1, X) + self.__b1)
         self.__A2 = sigmoid(np.dot(self.__W2, self.__A1) + self.__b2)
         return self.__A1, self.__A2
