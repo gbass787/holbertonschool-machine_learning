@@ -11,7 +11,7 @@ class DeepNeuralNetwork:
     Methods:
         __init__: Constructor
     """
-    def __init__(self, nx, layers):
+    def __init__(self, nx, layers, activation='sig'):
         """ Constructor
         Arguments:
             nx: number of input features to the neuron
@@ -26,9 +26,13 @@ class DeepNeuralNetwork:
         if not isinstance(layers, list) or len(layers) == 0:
             raise TypeError("layers must be a list of positive integers")
 
+        if activation != 'sig' and activation != 'tanh':
+            raise ValueError("activation must be 'sig' or 'tanh'")
+
         self.__L = len(layers)
         self.__cache = {}
         self.__weights = {}
+        self.__activation = activation
 
         for i in range(len(layers)):
             if not isinstance(layers[i], int) or layers[i] <= 0:
@@ -63,6 +67,11 @@ class DeepNeuralNetwork:
         """ Getter for weights """
         return self.__weights
 
+    @property
+    def activation(self):
+        """ Getter for activation """
+        return self.__activation
+
 ##############################################################################
 # Public instance methods
 ##############################################################################
@@ -77,12 +86,25 @@ class DeepNeuralNetwork:
         self.__cache["A0"] = X
 
         for i in range(self.__L):
-            Zx = np.matmul(
+            Z = np.matmul(
                     self.__weights["W{}".format(i + 1)],
                     self.__cache["A{}".format(i)]
                 ) + self.__weights["b{}".format(i + 1)]
 
-            self.__cache["A{}".format(i + 1)] = 1 / (1 + np.exp(-Zx))
+            if i == self.__L - 1:
+                # softmax activation for last layer
+                self.__cache["A{}".format(i + 1)] = \
+                    np.exp(Z) / np.sum(np.exp(Z), axis=0, keepdims=True)
+            else:
+                if self.__activation == 'sig':
+                    # sig activation for hidden layers
+                    self.__cache["A{}".format(i + 1)] = \
+                        1 / (1 + np.exp(-Z))
+
+                if self.__activation == 'tanh':
+                    # tanh activation for hidden layers
+                    self.__cache["A{}".format(i + 1)] = \
+                        (np.exp(Z) - np.exp(-Z)) / (np.exp(Z) + np.exp(-Z))
 
         return self.__cache["A{}".format(self.__L)], self.__cache
 
@@ -96,9 +118,7 @@ class DeepNeuralNetwork:
         """
         m = Y.shape[1]
 
-        return (1 / m * np.sum(
-            -Y * np.log(A) - (1 - Y) * np.log(1.0000001 - A)
-        ))
+        return -1 / m * np.sum(Y * np.log(A))
 
     def evaluate(self, X, Y):
         """ Evaluates the neural network's predictions
@@ -108,9 +128,11 @@ class DeepNeuralNetwork:
         Returns:
             The neuron's prediction and the cost of the network, respectively
         """
-        A_last, cache = self.forward_prop(X)
+        A, cache = self.forward_prop(X)
 
-        return np.where(A_last >= 0.5, 1, 0), self.cost(Y, A_last)
+        cost = self.cost(Y, A)
+
+        return np.where(A == np.amax(A, axis=0), 1, 0), cost
 
     def gradient_descent(self, Y, cache, alpha=0.05):
         """ Calculates one pass of gradient descent on the neural network
@@ -132,8 +154,13 @@ class DeepNeuralNetwork:
 
             if W_tmp is not None:
                 A = cache["A{}".format(i)]
-                # dZ = np.matmul(Wx.T, dZ) * (A * (1 - A))
-                dZ = np.matmul(W_tmp.T, dZ) * (A * (1 - A))
+                if self.__activation == 'sig':
+                    # sig dZ = np.matmul(Wx.T, dZ) * (A * (1 - A))
+                    dZ = np.matmul(W_tmp.T, dZ) * (A * (1 - A))
+
+                if self.__activation == 'tanh':
+                    # tanh dZ = np.matmul(Wx.T, dZ) * (1 - A ** 2)
+                    dZ = np.matmul(W_tmp.T, dZ) * (1 - A ** 2)
 
             # dW = np.matmul(dZ, A.T) / m
             dW = np.matmul(dZ, cache["A{}".format(i - 1)].T) / m
