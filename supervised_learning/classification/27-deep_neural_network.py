@@ -77,12 +77,19 @@ class DeepNeuralNetwork:
         self.__cache["A0"] = X
 
         for i in range(self.__L):
-            Zx = np.matmul(
+            Z = np.matmul(
                     self.__weights["W{}".format(i + 1)],
                     self.__cache["A{}".format(i)]
                 ) + self.__weights["b{}".format(i + 1)]
 
-            self.__cache["A{}".format(i + 1)] = 1 / (1 + np.exp(-Zx))
+            if i == self.__L - 1:
+                # softmax activation for last layer
+                self.__cache["A{}".format(i + 1)] = \
+                    np.exp(Z) / np.sum(np.exp(Z), axis=0, keepdims=True)
+            else:
+                # sig activation for hidden layers
+                self.__cache["A{}".format(i + 1)] = \
+                    1 / (1 + np.exp(-Z))
 
         return self.__cache["A{}".format(self.__L)], self.__cache
 
@@ -96,9 +103,7 @@ class DeepNeuralNetwork:
         """
         m = Y.shape[1]
 
-        return (1 / m * np.sum(
-            -Y * np.log(A) - (1 - Y) * np.log(1.0000001 - A)
-        ))
+        return -1 / m * np.sum(Y * np.log(A))
 
     def evaluate(self, X, Y):
         """ Evaluates the neural network's predictions
@@ -108,9 +113,11 @@ class DeepNeuralNetwork:
         Returns:
             The neuron's prediction and the cost of the network, respectively
         """
-        A_last, cache = self.forward_prop(X)
+        A, cache = self.forward_prop(X)
 
-        return np.where(A_last >= 0.5, 1, 0), self.cost(Y, A_last)
+        cost = self.cost(Y, A)
+
+        return np.where(A == np.amax(A, axis=0), 1, 0), cost
 
     def gradient_descent(self, Y, cache, alpha=0.05):
         """ Calculates one pass of gradient descent on the neural network
