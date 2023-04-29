@@ -1,11 +1,8 @@
 #!/usr/bin/env python3
 """
-Shuffle the data points in two matrices the same way.
+shuffles the data points in two matrices the same way.
 """
 import numpy as np
-"""
-docuemnted ;;;
-"""
 
 
 def shuffle_data(X, Y):
@@ -23,7 +20,7 @@ def shuffle_data(X, Y):
     Returns:
     numpy.ndarray, numpy.ndarray: The shuffled X and Y matrices.
     """
-    assert X.shape[0] == Y.shape[0],
+    assert X.shape[0] == Y.shape[0], "NumberofdatapointsinXandYshouldbethesame"
 
     perm = np.random.permutation(X.shape[0])
     shuffled_X = X[perm]
