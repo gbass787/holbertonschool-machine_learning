@@ -20,10 +20,6 @@ def shuffle_data(X, Y):
     Returns:
     numpy.ndarray, numpy.ndarray: The shuffled X and Y matrices.
     """
-    assert X.shape[0] == Y.shape[0], "NumberofdatapointsinXandYshouldbethesame"
-
-    perm = np.random.permutation(X.shape[0])
-    shuffled_X = X[perm]
-    shuffled_Y = Y[perm]
-
-    return shuffled_X, shuffled_Y
+    m = X.shape[0]
+    permutation = np.random.permutation(m)
+    return X[permutation], Y[permutation]
