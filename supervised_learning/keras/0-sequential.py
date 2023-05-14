@@ -1,32 +1,44 @@
 #!/usr/bin/env python3
+
+"""Useless comments"""
+
 import tensorflow.keras as K
 
 
 def build_model(nx, layers, activations, lambtha, keep_prob):
     """
-    Function that builds a neural network with the Keras library
-
-    Args:
-    nx: number of input features to the network
-    layers: list containing the number of nodes in each layer of the network
-    activations: list containing the activation functions used for each layer
-    of the network
-    lambtha: the L2 regularization parameter
-    keep_prob: the probability that a node will be kept for dropout
-
-    Returns:
-    model: a keras model
+    Build a simple deep learning model using L2 regularisation and
+    droupout layers
+    :param nx: The number of features of the dataset
+    :param layers: An array that cointain how much node a layer [i] got
+    :param activations: The activation functions for each layers at index [i]
+    :param lambtha: The L2 parameter
+    :param keep_prob: The prob for the dropout layer
+    :return: The created model
     """
-
-    model = K.Sequential()
-    for i in range(len(layers)):
-        if i == 0:
-            model.add(K.layers.Dense(layers[i], activation=activations[i],
-                      kernel_regularizer=K.regularizers.l2(lambtha),
-                      input_shape=(nx,)))
+    layers_sequence = []
+    regularize_l2 = K.regularizers.l2(lambtha)
+    for index, (layer, activation) in enumerate(zip(layers, activations)):
+        if index == 0:
+            layers_sequence.append(
+                K.layers.Dense(
+                    layer,
+                    activation=activation,
+                    input_shape=(nx,),
+                    kernel_regularizer=regularize_l2
+                )
+            )
         else:
-            model.add(K.layers.Dense(layers[i], activation=activations[i],
-                      kernel_regularizer=K.regularizers.l2(lambtha)))
-        if i < len(layers) - 1:  # no need to add dropout to the last layer
-            model.add(K.layers.Dropout(1 - keep_prob))
+            layers_sequence.append(
+                K.layers.Dense(
+                    layer,
+                    activation=activation,
+                    kernel_regularizer=regularize_l2
+                )
+            )
+        if index == len(layers) - 1:
+            continue
+        layers_sequence.append(K.layers.Dropout(1 - keep_prob))
+
+    model = K.Sequential(layers_sequence)
     return model
